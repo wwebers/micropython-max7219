@@ -1,20 +1,16 @@
 """
 MicroPython max7219 cascadable 8x8 LED matrix driver
 https://github.com/mcauser/micropython-max7219
-
 MIT License
 Copyright (c) 2017 Mike Causer
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,7 +21,7 @@ SOFTWARE.
 """
 
 from micropython import const
-import framebuf
+from framebuf import FrameBuffer, MONO_HLSB
 
 _NOOP = const(0)
 _DIGIT0 = const(1)
@@ -35,7 +31,8 @@ _SCANLIMIT = const(11)
 _SHUTDOWN = const(12)
 _DISPLAYTEST = const(15)
 
-class Matrix8x8:
+
+class Matrix8x8(FrameBuffer):
     def __init__(self, spi, cs, num):
         """
         Driver for cascading MAX7219 8x8 LED matrices.
@@ -53,26 +50,14 @@ class Matrix8x8:
         self.cs.init(cs.OUT, True)
         self.buffer = bytearray(8 * num)
         self.num = num
-        fb = framebuf.FrameBuffer(self.buffer, 8 * num, 8, framebuf.MONO_HLSB)
-        self.framebuf = fb
-        # Provide methods for accessing FrameBuffer graphics primitives. This is a workround
-        # because inheritance from a native class is currently unsupported.
-        # http://docs.micropython.org/en/latest/pyboard/library/framebuf.html
-        self.fill = fb.fill  # (col)
-        self.pixel = fb.pixel # (x, y[, c])
-        self.hline = fb.hline  # (x, y, w, col)
-        self.vline = fb.vline  # (x, y, h, col)
-        self.line = fb.line  # (x1, y1, x2, y2, col)
-        self.rect = fb.rect  # (x, y, w, h, col)
-        self.fill_rect = fb.fill_rect  # (x, y, w, h, col)
-        self.text = fb.text  # (string, x, y, col=1)
-        self.scroll = fb.scroll  # (dx, dy)
-        self.blit = fb.blit  # (fbuf, x, y[, key])
+
+        super().__init__(self.buffer, 8 * num, 8, MONO_HLSB)
+
         self.init()
 
     def _write(self, command, data):
         self.cs(0)
-        for m in range(self.num):
+        for _ in range(self.num):
             self.spi.write(bytearray([command, data]))
         self.cs(1)
 
