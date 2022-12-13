@@ -69,9 +69,30 @@ display = Matrix8x8(...)
 display.text_from_glyph("X", GLYPHS)
 ```
 
+### Shutdown / Wake
+Shutting down and waking up the display is supported. This should allow a device to consume just 150μA when it's not needed. When the display is woken from shutdown the previous display should appear.
+
+```python
+# shutdown display
+display.shutdown()
+
+# wake from shutdown
+display.wake()
+```
+
+## Test Mode
+Test mode will enable all pixels, shutdown mode has no effect when testing mode is enabled.
+
+```python
+# enable test mode
+display.test()
+# disable test mode
+display.test(False)
+```
 
 ## Attribution
 - Original code by [@mcauser](https://github.com/mcauser/micropython-max7219)
+- [Data-Sheet](https://www.analog.com/media/en/technical-documentation/data-sheets/max7219-max7221.pdf)
 
 
 ## License
