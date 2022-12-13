@@ -12,6 +12,7 @@ A MicroPython library for the MAX7219 8x8 LED matrix driver using the SPI interf
 - Custom font support
 - Extends the [FrameBuffer](http://docs.micropython.org/en/latest/pyboard/library/framebuf.html) class
 - Removes the need to specify offset for text method
+- Extendable
 
 
 ## Examples
@@ -80,7 +81,7 @@ display.shutdown()
 display.wake()
 ```
 
-## Test Mode
+### Test Mode
 Test mode will enable all pixels, shutdown mode has no effect when testing mode is enabled.
 
 ```python
@@ -89,6 +90,29 @@ display.test()
 # disable test mode
 display.test(False)
 ```
+
+### Extending
+#### Scrolling Text
+Although not built-in you could add scrolling text like shown in the following example:
+
+```python
+from utime import sleep_ms
+
+from max7219 import Matrix8x8
+
+class Matrix8x8Ext(Matrix8x8):
+    def scroll_text(self, s, ms_delay=100):
+        s_width = len(s) * 8
+        n_pixels = self.num * 8
+        while True:
+            for x in range(n_pixels, -s_width, -1):
+                self.fill(0)
+                self.text(s, x)
+                self.show()
+                sleep_ms(ms_delay)
+        return s_width
+```
+
 
 ## Attribution
 - Original code by [@mcauser](https://github.com/mcauser/micropython-max7219)
