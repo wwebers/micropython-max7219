@@ -1,5 +1,17 @@
 # MicroPython Max7219 8x8 LED Matrix
-A MicroPython library for the MAX7219 8x8 LED matrix driver using the SPI interface.Supports cascading matrices extending the [framebuf](http://docs.micropython.org/en/latest/pyboard/library/framebuf.html) class.
+![PyPI](https://img.shields.io/pypi/v/micropython-max7219)
+![PyPI - Implementation](https://img.shields.io/pypi/implementation/micropython-max7219)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/micropython-max7219)
+![PyPI - License](https://img.shields.io/pypi/l/micropython-max7219)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/micropython-max7219)
+
+A MicroPython library for the MAX7219 8x8 LED matrix driver using the SPI interface. Supporting custom fonts and cascading matrices.
+
+## Features
+- Cascading matrices together
+- Custom font support
+- Extends the [FrameBuffer](http://docs.micropython.org/en/latest/pyboard/library/framebuf.html) class
+- Removes the need to specify offset for text method
 
 
 ## Examples
@@ -22,13 +34,39 @@ ss = Pin(5, Pin.OUT)
 
 display = Matrix8x8(spi, ss, 4)
 
+# change brightness 1-15
 display.brightness(5)
 
+# clear display
 display.fill(0)
 display.show()
 
+# show text using FrameBuffer's font
 display.text("CODE")
 display.show()
+```
+
+
+## Docs
+### Custom Fonts
+Custom fonts (glyphs) can be provided, each glyph must be 8x8. Missing characters will use default characters from `FrameBuffer`.
+
+```python
+GLYPHS = {
+    "X": [
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0, 1, 0],
+        [0, 0, 1, 0, 0, 1, 0, 0],
+        [0, 0, 0, 1, 1, 0, 0, 0],
+        [0, 0, 0, 1, 1, 0, 0, 0],
+        [0, 0, 1, 0, 0, 1, 0, 0],
+        [0, 1, 0, 0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+    ],
+}
+
+display = Matrix8x8(...)
+display.text_from_glyph("X", GLYPHS)
 ```
 
 
