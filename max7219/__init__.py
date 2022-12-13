@@ -30,23 +30,23 @@ class Matrix8x8(FrameBuffer):
         >>> display.show()
 
         """
-        self.spi = spi
-        self.cs = cs
-        self.cs.init(cs.OUT, True)
-        self.buffer = bytearray(8 * num)
-        self.num = num
+        self._spi = spi
+        self._cs = cs
+        self._cs.init(self._cs.OUT, True)
+        self._num = num
+        self._buffer = bytearray(8 * self._num)
 
-        super().__init__(self.buffer, 8 * num, 8, MONO_HLSB)
+        super().__init__(self._buffer, 8 * self._num, 8, MONO_HLSB)
 
-        self.init()
+        self._write_init()
 
     def _write(self, command, data):
-        self.cs(0)
-        for _ in range(self.num):
-            self.spi.write(bytearray([command, data]))
-        self.cs(1)
+        self._cs(0)
+        for _ in range(self._num):
+            self._spi.write(bytearray([command, data]))
+        self._cs(1)
 
-    def init(self):
+    def _write_init(self):
         for command, data in (
             (_SHUTDOWN, 0),
             (_DISPLAYTEST, 0),
@@ -80,7 +80,7 @@ class Matrix8x8(FrameBuffer):
 
     def show(self):
         for y in range(8):
-            self.cs(0)
-            for m in range(self.num):
-                self.spi.write(bytearray([_DIGIT0 + y, self.buffer[(y * self.num) + m]]))
-            self.cs(1)
+            self._cs(0)
+            for m in range(self._num):
+                self._spi.write(bytearray([_DIGIT0 + y, self._buffer[(y * self._num) + m]]))
+            self._cs(1)
