@@ -64,6 +64,20 @@ class Matrix8x8(FrameBuffer):
     def text(self, s, x=0, y=0, c=1):
         super().text(s, x, y, c)
 
+    def text_from_glyph(self, s, glyphs, x_offset=0, y_offset=0):
+        col = 0
+        for char in s:
+            glyph = glyphs.get(char)
+
+            if glyph:
+                for y in range(8):
+                    for x in range(8):
+                        self.pixel(x+col+x_offset, y+y_offset, glyph[y][x])
+            else:
+                self.text(char, col+x_offset, y_offset)
+
+            col += 8
+
     def show(self):
         for y in range(8):
             self.cs(0)
