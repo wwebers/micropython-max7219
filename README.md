@@ -27,7 +27,7 @@ display.brightness(5)
 display.fill(0)
 display.show()
 
-display.text("CODE", 0, 0, 1)
+display.text("CODE")
 display.show()
 ```
 

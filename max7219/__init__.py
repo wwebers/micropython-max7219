@@ -26,7 +26,7 @@ class Matrix8x8(FrameBuffer):
         >>> from max7219 import Matrix8x8
         >>> spi = SPI(1)
         >>> display = Matrix8x8(spi, Pin('X5'), 4)
-        >>> display.text('1234',0,0,1)
+        >>> display.text('1234')
         >>> display.show()
 
         """
@@ -60,6 +60,9 @@ class Matrix8x8(FrameBuffer):
         if not 0 <= value <= 15:
             raise ValueError("Brightness out of range")
         self._write(_INTENSITY, value)
+
+    def text(self, s, x=0, y=0, c=1):
+        super().text(s, x, y, c)
 
     def show(self):
         for y in range(8):
