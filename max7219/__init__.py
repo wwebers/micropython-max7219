@@ -85,6 +85,9 @@ class Matrix8x8(FrameBuffer):
                 self._spi.write(bytearray([_DIGIT0 + y, self._buffer[(y * self._num) + m]]))
             self._cs(1)
 
+    def zero(self):
+        self.fill(0)
+
     def shutdown(self):
         self._write(_SHUTDOWN, 0)
 

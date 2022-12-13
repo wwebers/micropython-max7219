@@ -39,7 +39,7 @@ display = Matrix8x8(spi, ss, 4)
 display.brightness(5)
 
 # clear display
-display.fill(0)
+display.zero()
 display.show()
 
 # show text using FrameBuffer's font
@@ -49,6 +49,20 @@ display.show()
 
 
 ## Docs
+- For any change to the `FrameBuffer` to appear, call the `.show()` method
+- You may have to add delays when calling methods, these are documented in the datasheet
+- Tested on 1.19.1
+
+### Display Text
+
+```python
+display = Matrix8x8(...)
+
+display.zero()
+display.text("HI!")
+display.show()
+```
+
 ### Custom Fonts
 Custom fonts (glyphs) can be provided, each glyph must be 8x8. Missing characters will use default characters from `FrameBuffer`.
 
@@ -106,7 +120,7 @@ class Matrix8x8Ext(Matrix8x8):
         n_pixels = self.num * 8
         while True:
             for x in range(n_pixels, -s_width, -1):
-                self.fill(0)
+                self.zero()
                 self.text(s, x)
                 self.show()
                 sleep_ms(ms_delay)
