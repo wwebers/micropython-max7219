@@ -84,6 +84,30 @@ display = Matrix8x8(...)
 display.text_from_glyph("X", GLYPHS)
 ```
 
+### Format Options
+Setting the different format options for the display.
+
+```python
+#Test Different Format Options
+
+from framebuf import MONO_HLSB, MONO_HMSB, MONO_VLSB
+
+display = max7219.Matrix8x8(spi, ss, 1, MONO_VLSB)
+display.fill(0)
+display.text("P")
+display.show()
+time.sleep(0.5)
+display = max7219.Matrix8x8(spi, ss, 1, MONO_HMSB)
+display.fill(0)
+display.text("P")
+display.show()
+time.sleep(0.5)
+display = max7219.Matrix8x8(spi, ss, 1, MONO_HLSB)
+display.fill(0)
+display.text("P")
+display.show()
+```
+
 ### Shutdown / Wake
 Shutting down and waking up the display is supported. This should allow a device to consume just 150μA when it's not needed. When the display is woken from shutdown the previous display should appear.
 

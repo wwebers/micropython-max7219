@@ -18,7 +18,7 @@ _DISPLAYTEST = const(15)
 
 
 class Matrix8x8(FrameBuffer):
-    def __init__(self, spi, cs, num):
+    def __init__(self, spi, cs, num, format=MONO_HLSB):
         """
         Driver for cascading MAX7219 8x8 LED matrices.
 
@@ -36,7 +36,7 @@ class Matrix8x8(FrameBuffer):
         self._num = num
         self._buffer = bytearray(8 * self._num)
 
-        super().__init__(self._buffer, 8 * self._num, 8, MONO_HLSB)
+        super().__init__(self._buffer, 8 * self._num, 8, format)
 
         self._write_init()
 
