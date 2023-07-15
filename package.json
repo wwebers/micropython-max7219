@@ -1,0 +1,9 @@
+{
+  "urls": [
+    ["max7219/__init__.py", "github:wwebers/micropython-max7219/max7129/__init__.py"],
+  ],
+  "deps": [
+    ["frambuf", "latest"]
+  ],
+  "version": "0.2.0"
+}
