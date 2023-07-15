@@ -95,4 +95,7 @@ class Matrix8x8(FrameBuffer):
         self._write(_SHUTDOWN, 1)
 
     def test(self, enable=True):
-        self._write(_DISPLAYTEST, int(enable))
+        if enable:
+            self._write(_DISPLAYTEST, 1)
+        else:
+            self._write(_DISPLAYTEST, 0)
